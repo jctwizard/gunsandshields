@@ -141,27 +141,6 @@ public class PlayerController : MonoBehaviour
 
 			GameObject.Destroy(collider.gameObject);
 		}
-		else if (collider.gameObject.tag == "player")
-		{
-			print ((collider.gameObject.GetComponent<Rigidbody2D> ().velocity.x));
-
-			print ((GetComponent<Rigidbody2D> ().velocity.x));
-
-			print (facingRight);
-
-			// We only want the fastest moving player to bounce away
-			// But this causes problems because once they hit eachother the velocity is transmitted from one to the other via the physics engine
-			if (Mathf.Abs(GetComponent<Rigidbody2D> ().velocity.x) >= Mathf.Abs(collider.gameObject.GetComponent<Rigidbody2D> ().velocity.x))
-			{
-				GetComponent<Rigidbody2D> ().velocity = new Vector3 (-GetComponent<Rigidbody2D> ().velocity.x * opponentBounceForce, GetComponent<Rigidbody2D> ().velocity.y, 0.0f);
-			
-				//collider.gameObject.GetComponent<Rigidbody2D> ().velocity = new Vector3((collider.gameObject.GetComponent<Rigidbody2D> ().velocity.x)*0.5f, collider.gameObject.GetComponent<Rigidbody2D> ().velocity.y, 0.0f);
-			}
-
-			// Should we be able to jump off the other player? Throwing this in for experimentation for now.
-			// Either should be able to land on the other player then jump off, or 'bounce' off the other player somehow
-			grounded = true;
-		}
 	}
 
 	void OnTriggerEnter2D(Collider2D collider)
@@ -184,6 +163,19 @@ public class PlayerController : MonoBehaviour
 				collider.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector3(0.0f, 0.0f, 0.0f);
 				collider.gameObject.GetComponent<Rigidbody2D>().angularVelocity = 0.0f;
 			}
+		}
+		// Made this a trigger collider and moved the collider box to be slightly bigger than the player to avoid interacting with the physics engine on player collisions
+		else if (collider.gameObject.tag == "player")
+		{
+			// We only want the fastest moving player to bounce away
+			if (Mathf.Abs(GetComponent<Rigidbody2D> ().velocity.x) >= Mathf.Abs(collider.gameObject.GetComponent<Rigidbody2D> ().velocity.x))
+			{
+				GetComponent<Rigidbody2D> ().velocity = new Vector3 (-GetComponent<Rigidbody2D> ().velocity.x * opponentBounceForce, GetComponent<Rigidbody2D> ().velocity.y, 0.0f);
+			}
+
+			// Should we be able to jump off the other player? Throwing this in for experimentation for now.
+			// Either should be able to land on the other player then jump off, or 'bounce' off the other player somehow
+			grounded = true;
 		}
 	}
 }
