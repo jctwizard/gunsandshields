@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
 	public float damage = 0.0f;
 	public float knockBackForce = 10.0f;
 
-	public float opponentBounceForce = 0.5f;
+	public Vector2 opponentBounceForce;
 
 	public GameObject livesText;
 
@@ -155,6 +155,7 @@ public class PlayerController : MonoBehaviour
 			GetComponent<Rigidbody2D>().velocity = new Vector3(0.0f, 0.0f, 0.0f);
 			GetComponent<Rigidbody2D>().angularVelocity = 0.0f;
 
+			// The opposite player won - reset the game.
 			if (lives == 0)
 			{
 				lives = 3;
@@ -170,12 +171,13 @@ public class PlayerController : MonoBehaviour
 			// We only want the fastest moving player to bounce away
 			if (Mathf.Abs(GetComponent<Rigidbody2D> ().velocity.x) >= Mathf.Abs(collider.gameObject.GetComponent<Rigidbody2D> ().velocity.x))
 			{
-				GetComponent<Rigidbody2D> ().velocity = new Vector3 (-GetComponent<Rigidbody2D> ().velocity.x * opponentBounceForce, GetComponent<Rigidbody2D> ().velocity.y, 0.0f);
+				GetComponent<Rigidbody2D> ().velocity = new Vector3 (-GetComponent<Rigidbody2D> ().velocity.x * opponentBounceForce.x, GetComponent<Rigidbody2D> ().velocity.y + opponentBounceForce.y, 0.0f);
 			}
 
-			// Should we be able to jump off the other player? Throwing this in for experimentation for now.
-			// Either should be able to land on the other player then jump off, or 'bounce' off the other player somehow
-			grounded = true;
+			// Should we be able to jump off the other player?
+			// Either should be able to land on the other player then jump off by setting grounded to true,
+			// or 'bounce' off the top of the other player somehow by having opponentBounceForce.y > 0
+			//grounded = true;
 		}
 	}
 }
