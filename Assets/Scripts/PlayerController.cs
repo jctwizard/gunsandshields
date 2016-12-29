@@ -70,8 +70,6 @@ public class PlayerController : MonoBehaviour
 		{
 			GameObject newProjectile = GameObject.Instantiate(projectile, gun.transform.position, Quaternion.identity) as GameObject;
 
-			newProjectile.AddComponent<ProjectileScript> ();
-
 			if (facingRight)
 			{
 				newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector3(projectileSpeed, 0.0f, 0.0f);
@@ -154,6 +152,8 @@ public class PlayerController : MonoBehaviour
 			transform.position = initialPosition;
 			GetComponent<Rigidbody2D>().velocity = new Vector3(0.0f, 0.0f, 0.0f);
 			GetComponent<Rigidbody2D>().angularVelocity = 0.0f;
+
+			damage = 0.0f;
 
 			// The opposite player won - reset the game.
 			if (lives == 0)
