@@ -120,24 +120,26 @@ public class PlayerController : MonoBehaviour
 
 	void OnCollisionEnter2D(Collision2D collider)
 	{
-		if (collider.gameObject.tag == "platform")
-		{
+		if (collider.gameObject.tag == "platform") {
 			grounded = true;
-		}
-		else if (collider.gameObject.tag == "projectile")
-		{
+		} else if (collider.gameObject.tag == "projectile") {
 			damage += 10;
 
-			if (collider.gameObject.transform.position.x > transform.position.x)
-			{
-				GetComponent<Rigidbody2D>().AddForce(-Vector2.right * knockBackForce * damage);
-			}
-			else
-			{
-				GetComponent<Rigidbody2D>().AddForce(Vector2.right * knockBackForce * damage);
+			if (collider.gameObject.transform.position.x > transform.position.x) {
+				GetComponent<Rigidbody2D> ().AddForce (-Vector2.right * knockBackForce * damage);
+			} else {
+				GetComponent<Rigidbody2D> ().AddForce (Vector2.right * knockBackForce * damage);
 			}
 
-			GameObject.Destroy(collider.gameObject);
+			GameObject.Destroy (collider.gameObject);
+		}
+		else if (collider.gameObject.tag == "player")
+		{
+			// if we are higher than other player
+			if (collider.gameObject.transform.position.y < transform.position.y)
+			{
+				grounded = true;
+			}
 		}
 	}
 
